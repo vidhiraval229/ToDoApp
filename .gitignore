@@ -2,6 +2,20 @@
 #
 .DS_Store
 
+# React Native
+node_modules/
+ios/build/
+android/app/build/
+*.log
+*.lock
+*.hprof
+*.so
+*.swp
+*.out
+*.pid
+*.gz
+*.log.*
+
 # Xcode
 #
 build/
