@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 import STRINGS from '../utils/string';
 
@@ -45,18 +46,17 @@ const TaskInput = ({ onSubmit, task, isEditing }) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <Text style={styles.label}>{STRINGS.taskTitle}</Text>
-      <TextInput
-        style={styles.input}
+    <InputContainer>
+      <Label>{STRINGS.taskTitle}</Label>
+      <StyledTextInput
         placeholder={STRINGS.placeHolderText}
         value={title}
         onChangeText={setTitle}
       />
-      <Text style={styles.label}>{STRINGS.taskDate}</Text>
-      <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
-        <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
-      </TouchableOpacity>
+      <Label>{STRINGS.taskDate}</Label>
+      <DateButton onPress={() => setShowDatePicker(true)} >
+        <DateText>{date.toLocaleDateString()}</DateText>
+      </DateButton>
       {showDatePicker && (
         <DateTimePicker
           value={date}
@@ -65,10 +65,10 @@ const TaskInput = ({ onSubmit, task, isEditing }) => {
           onChange={handleDateChange}
         />
       )}
-      <Text style={styles.label}>{STRINGS.taskTime}</Text>
-      <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.dateButton}>
-        <Text style={styles.dateText}>{time.toLocaleTimeString()}</Text>
-      </TouchableOpacity>
+      <Label>{STRINGS.taskTime}</Label>
+      <DateButton onPress={() => setShowTimePicker(true)} >
+        <DateText>{time.toLocaleTimeString()}</DateText>
+      </DateButton>
       {showTimePicker && (
         <DateTimePicker
           value={time}
@@ -77,71 +77,72 @@ const TaskInput = ({ onSubmit, task, isEditing }) => {
           onChange={handleTimeChange}
         />
       )}
-          <TouchableOpacity style={{
-        height:40, 
-        borderRadius:25,
-        alignItems:"center",
-        justifyContent:"center",
-        backgroundColor: 'rgba(75, 0, 82, 0.74)',
-       }} onPress={handleSubmit}>
-        <Text style={{color:"white", fontSize:15, fontWeight:"500"}} >
-          {isEditing ?  STRINGS.editTask : STRINGS.addTask}
-        </Text>
-      </TouchableOpacity>
-
-    </View>
+          <SubmitButton onPress={handleSubmit}>
+               <SubmitButtonText>
+                  {isEditing ?  STRINGS.editTask : STRINGS.addTask}
+               </SubmitButtonText>
+          </SubmitButton>
+      </InputContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  inputContainer: {
-    padding: 20,
-    backgroundColor: 'rgba(75, 0, 82, 0.51)',
-    borderRadius: 10,
-    margin: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontWeight:"500",
-    color:"white"
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 15,
-    color:"rgba(75, 0, 82, 0.74)",
-    backgroundColor:"white",
-    height:40
-  },
-  dateButton: {
-    padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-  dateText: {
-    color: 'rgba(75, 0, 82, 0.74)',
-  },
-  errorText:{
-    color:"white",
-    marginTop:-10,
-    paddingBottom:10
-  },
-  dateTimePicker: {
-    backgroundColor: 'black',
-    borderRadius: 5,
-    borderColor: '#C5C5C5',
-    borderWidth: 1,
-    marginVertical: 10,
-    height: 43,
-    color:'red'
-   },})
+const InputContainer = styled.View`
+  padding: 20px;
+  background-color: rgba(75, 0, 82, 0.51);
+  border-radius: 10px;
+  margin: 10px;
+  shadow-color: #000;
+  shadow-opacity: 0.5;
+  shadow-radius: 2px;
+`;
+
+const Label = styled.Text`
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: white;
+`;
+
+const StyledTextInput = styled.TextInput`
+  border-width: 1px;
+  border-color: #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  color: rgba(75, 0, 82, 0.74);
+  background-color: white;
+  height: 40px;
+`;
+
+const DateButton = styled.TouchableOpacity`
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-bottom: 15px;
+`;
+
+const DateText = styled.Text`
+  color: rgba(75, 0, 82, 0.74);
+`;
+
+const ErrorText = styled.Text`
+  color: white;
+  margin-top: -10px;
+  padding-bottom: 10px;
+`;
+
+const SubmitButton = styled.TouchableOpacity`
+  height: 40px;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(75, 0, 82, 0.74);
+`;
+
+const SubmitButtonText = styled.Text`
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+`;
 
 export default TaskInput;
