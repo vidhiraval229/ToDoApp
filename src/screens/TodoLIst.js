@@ -33,6 +33,7 @@ const TodoList = () => {
 
   const handleAddTask = task => {
     dispatch(addTask({ ...task, id: Date.now().toString() }));
+    showToastAlertWMsg(STRINGS.addSuccess);
     Keyboard.dismiss()
   };
 

@@ -12,6 +12,7 @@ const STRINGS = {
     titleError:'Task title is required.',
     timeError:'The selected time must be at least 10 minutes from now.',
     deteleSuccess:'Task deleted successfully.',
-    updateSuccess:'Task updated siccessfully.'
+    updateSuccess:'Task updated siccessfully.',
+    addSuccess:'Task created successfully.'
    }
    export default STRINGS
