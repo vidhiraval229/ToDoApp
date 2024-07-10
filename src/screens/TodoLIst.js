@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {  FlatList, Keyboard } from 'react-native';
+import {  FlatList, Keyboard, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import styled from 'styled-components/native';
 
 import TaskItem from '../components/TaskItem';
-import TaskInput from '../components/TaskInput';
 import DeleteModal from '../components/DeleteModal';
+import CreateTaskModal from '../components/CreateTaskModal';
 
 import { addTask, editTask, deleteTask, markTaskDone } from '../storage/actions/taskActions';
 
@@ -21,7 +21,11 @@ const TodoList = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [id, setId] = useState(null)
+  const [createModal, setCreateModal] = useState(false);
+  const [id, setId] = useState(null);
+  const curHr = new Date().getHours();
+  let greeting = "Welcome ";
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -34,6 +38,7 @@ const TodoList = () => {
   const handleAddTask = task => {
     dispatch(addTask({ ...task, id: Date.now().toString() }));
     showToastAlertWMsg(STRINGS.addSuccess);
+    setCreateModal(false)
     Keyboard.dismiss()
   };
 
@@ -42,6 +47,7 @@ const TodoList = () => {
     showToastAlertWMsg(STRINGS.updateSuccess)
     setIsEditing(false);
     setCurrentTask(null);
+    setCreateModal(false);
     Keyboard.dismiss()
   };
 
@@ -69,10 +75,27 @@ const TodoList = () => {
     });
   };
 
+  if (curHr < 12) {
+    greeting = STRINGS?.mgsGoodMorning;
+} else if (curHr < 17) {
+    greeting = STRINGS?.mgsGoodAfternoon;
+} else {
+    greeting = STRINGS?.mgsGoodEvening;
+}
+
  return (
+  <>
     <Container>
-      <TaskInput onSubmit={isEditing ? handleEditTask : handleAddTask} task={currentTask} isEditing={isEditing} />
-      <FlatList
+      <ProfileView>
+       <UserProfile source={{uri:"https://avatar.iran.liara.run/public/boy"}}/>
+      <UserTextView>
+          <HelloText>{STRINGS.helloText}</HelloText>
+          <GreettingText>{greeting}</GreettingText>
+      </UserTextView>
+      </ProfileView>
+      {
+        tasks?.length ?
+       <FlatList
         data={tasks}
         renderItem={({ item }) => (
           <TaskItem
@@ -80,6 +103,7 @@ const TodoList = () => {
             onEdit={() => {
               setId(item?.id)
               setCurrentTask(item);
+              setCreateModal(true);
               setIsEditing(true);
             }}
             onDelete={() => {
@@ -90,8 +114,21 @@ const TodoList = () => {
           />
         )}
         keyExtractor={item => item.id}
-      />
+      /> 
+      :
+       <EmptyView>
+          <EmptyText>{STRINGS.emptyTextMsg}</EmptyText>
+       </EmptyView>
+      }
       
+      <CreateTaskModal  
+      showModal={createModal}
+      inVisible={() => setCreateModal(!createModal)}
+      isEditing={isEditing}
+      currentTask={currentTask}
+      handleAddTask={() => handleAddTask}
+      handleEditTask={() => handleEditTask}
+      />
       <DeleteModal
         isShowModel={deleteModal}
         alertTitle={STRINGS.alertMsg}
@@ -101,9 +138,55 @@ const TodoList = () => {
         onTouchOutside={() => setDeleteModal(false)}
       />
     </Container>
+    <StickyView onPress={() => setCreateModal(true)}>
+        <PlusIcon>+</PlusIcon>
+    </StickyView>
+    </>
   );
 };
 
+const EmptyText = styled.Text`
+color:${COLORS.DarkTheme};
+font-size:15px;
+`
+const EmptyView = styled.View`
+flex:2;
+justify-content:center;
+align-items:center;
+`
+
+const UserTextView = styled.View`
+padding-left:10px;
+` 
+const UserProfile = styled.Image` 
+height:55px;
+width:55px;
+`
+const ProfileView = styled.View`
+flex-direction:row;
+align-items:center;
+padding:10px;
+`
+
+const PlusIcon = styled.Text`
+font-size:45px;
+color:${COLORS.White};
+font-weight:bold;
+text-align:center;
+bottom:4px;
+`
+const StickyView = styled.TouchableOpacity`
+height:60px;
+width:60px;
+border-radius:30px;
+background-color:${COLORS.ThemeColor};
+position:absolute;
+bottom:40px;
+right:40px;
+align-items:center;
+justify-content:center;
+
+`
 
 const Container = styled.View`
     flex: 1;
@@ -111,4 +194,14 @@ const Container = styled.View`
     background-color: ${COLORS.LightTheme};
 `;
 
+const HelloText = styled.Text`
+    font-size:30px;
+    font-weight:bold;
+    color:${COLORS.DarkTheme};
+`
+const GreettingText = styled.Text`
+   font-size:15px;
+    font-weight:bold;
+    color:${COLORS.DarkTheme};
+`
 export default TodoList;

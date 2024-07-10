@@ -34,10 +34,10 @@ const TaskItem = ({ task, onEdit, onDelete, onMarkDone }) => {
 const ItemContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  padding: 12px;
   background-color: ${COLORS.White};
   border-radius: 10px;
-  margin: 10px;
+  margin: 5px;
   shadow-color: ${COLORS.Black};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.3;

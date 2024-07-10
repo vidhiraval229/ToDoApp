@@ -1,4 +1,10 @@
 const STRINGS = {
+    helloText:"Hello",
+    emptyTextMsg:"Create to do please click on + ",
+    mgsGoodMorning: "Good Morning",
+    mgsGoodAfternoon: "Good Afternoon",
+    mgsGoodEvening: "Good Evening",
+    msgGoodNight: "Good Night",
     taskTitle:'Task Title',
     taskDate:'Task Date',
     taskTime:'Task Time',
