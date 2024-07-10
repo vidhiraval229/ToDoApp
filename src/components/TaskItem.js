@@ -1,6 +1,9 @@
 import React from 'react';
+
 import styled from 'styled-components/native';
+
 import IMAGES from '../utils/image';
+import COLORS from '../utils/colors';
 
 const TaskItem = ({ task, onEdit, onDelete, onMarkDone }) => {
   return (
@@ -17,7 +20,11 @@ const TaskItem = ({ task, onEdit, onDelete, onMarkDone }) => {
           <ActionImage source={IMAGES.delete} />
         </ActionButton>
         <ActionButton onPress={() => onMarkDone(task.id)}>
-          <ActionImage source={IMAGES.emptyCheckMark} />
+          {
+            task?.isCompeleted ? 
+             <CheckMark source={IMAGES.checkMark}/> : 
+             <ActionImage source={IMAGES.emptyCheckMark} />
+          }   
         </ActionButton>
       </TaskActions>
     </ItemContainer>
@@ -28,14 +35,14 @@ const ItemContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 20px;
-  background-color: #fff;
+  background-color: ${COLORS.White};
   border-radius: 10px;
   margin: 10px;
-  shadow-color: #000;
+  shadow-color: ${COLORS.Black};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.3;
   shadow-radius: 2px;
-  elevation: 2;
+  elevation: 5;
 `;
 
 const TaskInfo = styled.View`
@@ -52,11 +59,11 @@ const TaskActions = styled.View`
 const TaskTitle = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: rgba(75, 0, 82, 0.74);
+  color: ${COLORS.DarkTheme};
 `;
 
 const TaskDate = styled.Text`
-  color: rgba(75, 0, 82, 0.74);
+  color: ${COLORS.DarkTheme};
 `;
 
 const ActionButton = styled.TouchableOpacity``;
@@ -64,7 +71,10 @@ const ActionButton = styled.TouchableOpacity``;
 const ActionImage = styled.Image`
   height: 20px;
   width: 20px;
-  tint-color: rgba(75, 0, 82, 0.74);
+  tint-color: ${COLORS.DarkTheme};
 `;
-
+const CheckMark = styled.Image`
+ height: 20px;
+  width: 20px;
+`
 export default TaskItem;
